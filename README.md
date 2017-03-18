@@ -13,7 +13,7 @@ buildscript {
     }
   }
   dependencies {
-    classpath "gradle.plugin.net.java.openjdk.shinyafox:jshell-gradle-plugin:1.0.2-SNAPSHOT"
+    classpath "gradle.plugin.net.java.openjdk.shinyafox:jshell-gradle-plugin:1.0.3"
   }
 }
 
@@ -24,7 +24,7 @@ or
 
 ```
 plugins {
-  id "net.java.openjdk.shinyafox.jshell.gradle.plugin" version "1.0.2-SNAPSHOT"
+  id "net.java.openjdk.shinyafox.jshell.gradle.plugin" version "1.0.3"
 }
 ```
 (for gradle 2.1+)
@@ -35,5 +35,7 @@ Currently we need to run the task with some hack for JDK9.
 Add path for jdk9 to `JAVA_HOME` and some options to JAVA_OPTS and run task `jshell` with `--no-daemon --console plain` for gradle options.
 Following is example with gradlew:
 ```
-JAVA_HOME=/path/to/your/jdk9 JAVA_OPTS="--add-exports jdk.jshell/jdk.internal.jshell.tool=ALL-UNNAMED --add-opens java.base/java.lang=ALL-UNNAMED" ./gradlew build --no-daemon --console plain
+JAVA_HOME=/path/to/your/jdk9 \
+JAVA_OPTS="--add-exports jdk.jshell/jdk.internal.jshell.tool=ALL-UNNAMED --add-opens java.base/java.lang=ALL-UNNAMED"\
+./gradlew --no-daemon --console plain jshell
 ```

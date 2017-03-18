@@ -1,0 +1,28 @@
+group 'net.java.openjdk.shinyafox'
+version '1.0-SNAPSHOT'
+
+apply plugin: 'groovy'
+
+sourceCompatibility = 9
+
+repositories {
+    mavenCentral()
+}
+
+buildscript {
+    dependencies {
+        classpath files('build/libs/jshell-gradle-plugin-1.0-SNAPSHOT.jar')
+    }
+}
+apply plugin: 'net.java.openjdk.shinyafox.jshell.gradle.plugin'
+
+dependencies {
+    compile gradleApi()
+    compile localGroovy()
+}
+jar.baseName = 'jshell-gradle-plugin'
+
+tasks.withType(GroovyCompile) {
+    options.fork = false
+    groovyOptions.fork = false
+}

@@ -19,7 +19,7 @@ class JShellGradlePlugin implements Plugin<Project> {
         .doLast {
             def path
             project.tasks.withType(JavaCompile) {
-                path = classpath.asPath
+                path = classpath.findAll{ it.exists() }.join(':')
             }
 
             Thread.currentThread().setContextClassLoader(ClassLoader.getSystemClassLoader()) // promote class loader

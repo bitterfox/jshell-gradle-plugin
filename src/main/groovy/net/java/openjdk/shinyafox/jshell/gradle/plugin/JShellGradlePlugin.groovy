@@ -19,7 +19,9 @@ class JShellGradlePlugin implements Plugin<Project> {
         .doLast {
             def path
             project.tasks.withType(JavaCompile) {
-                path = classpath.findAll{ it.exists() }.join(':')
+                path = classpath.findAll{ it.exists() }.join(
+                    System.properties['os.name'].toLowerCase().contains('windows') ? ';' : ':'
+                )
             }
 
             Thread.currentThread().setContextClassLoader(ClassLoader.getSystemClassLoader()) // promote class loader

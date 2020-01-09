@@ -13,7 +13,7 @@ buildscript {
     }
   }
   dependencies {
-    classpath "gradle.plugin.net.java.openjdk.shinyafox:jshell-gradle-plugin:1.0.4"
+    classpath "gradle.plugin.net.java.openjdk.shinyafox:jshell-gradle-plugin:1.0.5"
   }
 }
 
@@ -24,7 +24,7 @@ or
 
 ```
 plugins {
-  id "net.java.openjdk.shinyafox.jshell.gradle.plugin" version "1.0.4"
+  id "net.java.openjdk.shinyafox.jshell.gradle.plugin" version "1.0.5"
 }
 ```
 (for gradle 2.1+)

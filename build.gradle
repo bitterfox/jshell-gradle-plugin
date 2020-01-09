@@ -1,5 +1,9 @@
+plugins {
+  id "com.gradle.plugin-publish" version "0.10.1"
+}
+
 group 'net.java.openjdk.shinyafox'
-version '1.0.4'
+version '1.0.5'
 
 apply plugin: 'groovy'
 
@@ -9,18 +13,6 @@ repositories {
     mavenCentral()
     jcenter()
 }
-
-buildscript {
-    repositories {
-        maven {
-            url "https://plugins.gradle.org/m2/"
-        }
-    }
-    dependencies {
-        classpath "com.gradle.publish:plugin-publish-plugin:0.9.7"
-    }
-}
-apply plugin: "com.gradle.plugin-publish"
 
 dependencies {
     compile gradleApi()
@@ -37,7 +29,7 @@ pluginBundle {
     website = 'https://github.com/bitterfox/jshell-gradle-plugin'
     vcsUrl = 'https://github.com/bitterfox/jshell-gradle-plugin'
     description = 'JShell supports for your gradle project. Let\'s explore your classes and dependencies with jshell'
-    tags = ['java9', 'jshell', "repl"]
+    tags = ['java9', 'java10', 'java11', 'java12', 'java13', 'jshell', 'repl']
 
     plugins {
         jshellPlugin {

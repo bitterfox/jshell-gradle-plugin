@@ -1,32 +1,36 @@
 package net.java.openjdk.shinyafox.jshell.gradle.plugin
 
-import java.io.File
-import jdk.internal.jshell.tool.JShellToolProvider
-
+import jdk.jshell.tool.JavaShellToolBuilder
 import org.gradle.api.Plugin
 import org.gradle.api.Project
-import org.gradle.api.tasks.compile.JavaCompile
-
-import java.nio.file.Files
-import java.nio.file.Paths
+import org.gradle.api.tasks.JavaExec
 
 class JShellGradlePlugin implements Plugin<Project> {
 
     @Override
     void apply(Project project) {
-        project.tasks.create('jshell')
-        .dependsOn("classes")
-        .doLast {
-            def path
-            project.tasks.withType(JavaCompile) {
-                path = classpath.findAll{ it.exists() }.join(
-                    System.properties['os.name'].toLowerCase().contains('windows') ? ';' : ':'
-                )
+        def jshellTask = project.tasks.create('jshell')
+        def classesTask = project.tasks.find { it.name == "classes" }
+        if (classesTask) {
+            jshellTask.dependsOn classesTask
+        } else {
+            // Some multi-module projects may not have the :classes task
+            jshellTask.logger.warn ":jshell task :classes not found, be sure to compile the project first"
+        }
+        jshellTask.doLast {
+            Set pathSet = []
+            project.tasks.withType(JavaExec) {
+                pathSet.addAll(classpath.findAll{ it.exists() })
             }
-
+            project.subprojects.each {
+                it.tasks.withType(JavaExec) {
+                    pathSet.addAll(classpath.findAll{ it.exists() })
+                }
+            }
             Thread.currentThread().setContextClassLoader(ClassLoader.getSystemClassLoader()) // promote class loader
-            JShellToolProvider.main((String[])["--class-path", path].toArray());
+            def path = pathSet.join(System.properties['os.name'].toLowerCase().contains('windows') ? ';' : ':')
+            jshellTask.logger.debug(":jshell executing with --class-path \"{}\"", path)
+            JavaShellToolBuilder.builder().run((String[])["--class-path", path].toArray())
         }
     }
-
 }

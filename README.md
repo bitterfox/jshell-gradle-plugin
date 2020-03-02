@@ -1,10 +1,15 @@
 # jshell-gradle-plugin
-This gradle plugin helps you to explore your code and dependency in your gradle project with in jshell -- the official Java REPL tool.
+
+This gradle plugin helps you to explore your code and dependencies in your gradle project
+with in [jshell](https://docs.oracle.com/javase/9/jshell/introduction-jshell.htm) -- the official Java REPL tool.
 
 Hosted on https://plugins.gradle.org/plugin/net.java.openjdk.shinyafox.jshell.gradle.plugin
 
+
 ## Getting started
+
 To use this plugin, add following to your `build.gradle`:
+
 ```
 buildscript {
   repositories {
@@ -31,11 +36,22 @@ plugins {
 
 Task `jshell` is now enabled, which execute jshell with your classes and dependencies after compiling your code.
 
-Currently we need to run the task with some hacks for JDK9.
-Add a path for your jdk9 to `JAVA_HOME` and some options to JAVA_OPTS, and run task `jshell` with `--no-daemon --console plain` for gradle options.
+You need to run the task `jshell` with the options `--no-daemon --console plain`.
 Following is an example with gradlew:
+
 ```
-JAVA_HOME=/path/to/your/jdk9 \
-JAVA_OPTS="--add-exports jdk.jshell/jdk.internal.jshell.tool=ALL-UNNAMED --add-opens java.base/java.lang=ALL-UNNAMED"\
 ./gradlew --no-daemon --console plain jshell
+```
+
+If you see this warning and the jshell console does not detect your classes:
+
+> :jshell task :classes not found, be sure to compile the project first
+
+Means the `classes` task needed to compile your project before launch `jshell`
+does not exist, just append the task needed to compile the project,
+some time is the same `classes` task but is not detected in multi-modules
+projects, so you need to add it explicitly in the Gradle command:
+
+```
+./gradlew --no-daemon --console plain classes jshell
 ```

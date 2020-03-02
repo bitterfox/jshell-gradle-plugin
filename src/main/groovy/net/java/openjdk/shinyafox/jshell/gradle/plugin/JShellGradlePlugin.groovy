@@ -1,6 +1,6 @@
 package net.java.openjdk.shinyafox.jshell.gradle.plugin
 
-import jdk.internal.jshell.tool.JShellToolProvider
+import jdk.jshell.tool.JavaShellToolBuilder
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.tasks.JavaExec
@@ -31,7 +31,7 @@ class JShellGradlePlugin implements Plugin<Project> {
             Thread.currentThread().setContextClassLoader(ClassLoader.getSystemClassLoader()) // promote class loader
             def path = pathSet.join(System.properties['os.name'].toLowerCase().contains('windows') ? ';' : ':')
             jshellTask.logger.debug(":jshell executing with --class-path \"{}\"", path)
-            JShellToolProvider.main((String[])["--class-path", path].toArray());
+            JavaShellToolBuilder.builder().run((String[])["--class-path", path].toArray())
         }
     }
 }
